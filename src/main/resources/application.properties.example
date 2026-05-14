@@ -1,0 +1,13 @@
+spring.application.name=planner-api
+
+spring.datasource.url=jdbc:postgresql://localhost:5432/plannerdb
+spring.datasource.username=
+spring.datasource.password=
+spring.datasource.driver-class-name=org.postgresql.Driver
+
+spring.flyway.enabled=true
+spring.flyway.locations=classpath:db/migration
+
+spring.jpa.hibernate.ddl-auto=validate
+spring.jpa.show-sql=true
+spring.jpa.open-in-view=false

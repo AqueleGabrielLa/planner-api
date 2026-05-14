@@ -1,0 +1,10 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: planner-postgres
+    environment:
+      POSTGRES_DB: plannerdb
+      POSTGRES_USER: planner
+      POSTGRES_PASSWORD: planner123
+    ports:
+      - "5433:5432"
