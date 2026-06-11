@@ -2,6 +2,8 @@ package com.gabriel.plannerapi.security;
 
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
@@ -11,4 +13,14 @@ import org.springframework.context.annotation.Configuration;
         scheme = "bearer",
         bearerFormat = "JWT"
 )
-public class SwaggerConfig {}
+public class SwaggerConfig {
+
+    public OpenAPI customOpenAPI() {
+        return new OpenAPI()
+            .info(new Info()
+                .title("Planner API")
+                .version("1.0")
+                .description("API de gerenciamento de tasks"));
+    }
+
+}

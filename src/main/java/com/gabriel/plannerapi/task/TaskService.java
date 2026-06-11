@@ -1,5 +1,6 @@
 package com.gabriel.plannerapi.task;
 
+import com.gabriel.plannerapi.exception.ResourceNotFoundException;
 import com.gabriel.plannerapi.user.UserAccount;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class TaskService {
 
     public TaskReponse getTaskById(UUID id, UserAccount user){
         Task task = taskRepository.findByIdAndUser(id, user)
-                .orElseThrow(() -> new RuntimeException("Task não encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Task com id " + id + " não encontrada"));
 
         return new TaskReponse(task.getId(), task.getTitle(), task.getDescription(), task.isCompleted(), task.getCreatedAt());
     }
@@ -41,7 +42,7 @@ public class TaskService {
 
     public TaskReponse updateTask(UUID id, TaskPatchRequest request, UserAccount user){
         Task task = taskRepository.findByIdAndUser(id, user)
-                .orElseThrow(() -> new RuntimeException("Task não encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Task com id " + id + " não encontrada"));
 
         if (request.title() != null) task.setTitle(request.title());
         if (request.description() != null) task.setDescription(request.description());
@@ -54,7 +55,7 @@ public class TaskService {
 
     public void deleteTask(UUID id, UserAccount user){
         Task task = taskRepository.findByIdAndUser(id, user)
-                .orElseThrow(() -> new RuntimeException("Task não encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Task com id " + id + " não encontrada"));
 
         taskRepository.delete(task);
     }
