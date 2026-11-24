@@ -1,5 +1,7 @@
 package com.gabriel.plannerapi.security;
 
+import com.gabriel.plannerapi.user.UserAccount;
+import com.gabriel.plannerapi.user.UserAccountService;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -10,14 +12,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -25,7 +26,7 @@ import java.io.IOException;
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-    private final UserDetailsService userDetailsService;
+    private final UserAccountService userAccountService;
 
     @Override
     protected void doFilterInternal(
@@ -46,12 +47,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             final String email = jwtService.extractEmail(token);
 
             if(email != null && SecurityContextHolder.getContext().getAuthentication() == null){
-                UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+                UserAccount user = userAccountService.findByEmail(email)
+                        .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
 
-                if(jwtService.isTokenValid(token, userDetails.getUsername())) {
+                if(jwtService.isTokenValid(token, user.getEmail())) {
                     UsernamePasswordAuthenticationToken authToken =
                             new UsernamePasswordAuthenticationToken(
-                                    userDetails, null, userDetails.getAuthorities()
+                                    user, null, List.of()
                             );
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);

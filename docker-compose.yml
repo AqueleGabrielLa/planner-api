@@ -2,6 +2,7 @@ services:
   postgres:
     image: postgres:16
     container_name: planner-postgres
+    restart: unless-stopped
     environment:
       POSTGRES_DB: plannerdb
       POSTGRES_USER: planner
@@ -13,10 +14,13 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
   api:
     build: .
     container_name: planner-api
+    restart: unless-stopped
     ports:
       - "8080:8080"
     environment:
@@ -27,3 +31,6 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+
+volumes:
+  postgres_data:
