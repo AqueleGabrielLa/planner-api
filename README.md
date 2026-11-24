@@ -67,7 +67,7 @@ cd planner-api
 docker compose up --build
 ```
 
-O compose sobe o PostgreSQL na porta `5433` e a API na `8080`. A API espera o banco ficar pronto e o Flyway cria as tabelas na primeira subida.
+O compose sobe o PostgreSQL na porta `5433` e a API na `8080`. A API espera o banco ficar pronto e o Flyway cria as tabelas na primeira subida. O `Dockerfile` é multi-stage: compila com Maven 21 e a imagem final contém só o JRE e o jar.
 
 - API: **http://localhost:8080**
 - Swagger UI: **http://localhost:8080/swagger-ui/index.html**
@@ -148,7 +148,7 @@ Todas as rotas exigem o header `Authorization: Bearer <token>`, **exceto** `/aut
 | `POST` | `/task/` | Cria uma tarefa | Sim | `200` |
 | `PATCH` | `/task/{id}` | Atualiza campos enviados | Sim | `200` |
 | `DELETE` | `/task/{id}` | Remove uma tarefa | Sim | `204` |
-| `GET` | `/users/{id}` | Dados públicos de um usuário | Sim | `200` |
+| `GET` | `/users/{id}` | Dados do próprio usuário autenticado | Sim | `200` |
 
 **Corpos das requisições**
 
@@ -276,7 +276,7 @@ Erros são padronizados:
 | `400` | `BAD_REQUEST` | JSON malformado ou ID com formato inválido |
 | `401` | `UNAUTHORIZED` | E-mail ou senha inválidos no login |
 | `401` | — | Sem token ou token inválido/expirado |
-| `404` | `NOT_FOUND` | Tarefa inexistente ou de outro usuário |
+| `404` | `NOT_FOUND` | Tarefa inexistente/de outro usuário ou tentativa de ler outro usuário |
 | `409` | `CONFLICT` | E-mail já cadastrado |
 | `500` | `INTERNAL_ERROR` | Erro inesperado (registrado no log do servidor) |
 
