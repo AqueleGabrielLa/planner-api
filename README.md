@@ -1,5 +1,7 @@
 # Planner API
 
+[![CI](https://github.com/AqueleGabrielLa/planner-api/actions/workflows/ci.yml/badge.svg?branch=dev)](https://github.com/AqueleGabrielLa/planner-api/actions/workflows/ci.yml)
+
 API REST de gerenciamento de tarefas com autenticação JWT, multiusuário e persistência em PostgreSQL. Feito pra estudar Spring: security, JPA, validação, Flyway, testes e Docker.
 
 ---
