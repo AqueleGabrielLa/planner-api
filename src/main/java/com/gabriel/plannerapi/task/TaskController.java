@@ -24,13 +24,13 @@ public class TaskController {
 
     @Operation(summary = "Lista todas as tasks do usuário")
     @GetMapping("/")
-    public ResponseEntity<List<TaskReponse>> getAllTasks(@AuthenticationPrincipal UserAccount user){
+    public ResponseEntity<List<TaskResponse>> getAllTasks(@AuthenticationPrincipal UserAccount user){
         return ResponseEntity.ok(taskService.getAllTasks(user));
     }
 
     @Operation(summary = "Busca uma task pelo ID")
     @GetMapping("/{id}")
-    public ResponseEntity<TaskReponse> getTaskById(
+    public ResponseEntity<TaskResponse> getTaskById(
             @PathVariable UUID id,
             @AuthenticationPrincipal UserAccount user
     ){
@@ -39,7 +39,7 @@ public class TaskController {
 
     @Operation(summary = "Cria uma nova task")
     @PostMapping("/")
-    public ResponseEntity<TaskReponse> createTask(
+    public ResponseEntity<TaskResponse> createTask(
             @RequestBody @Valid TaskRequest request,
             @AuthenticationPrincipal UserAccount user
     ){
@@ -48,9 +48,9 @@ public class TaskController {
 
     @Operation(summary = "Atualiza uma task")
     @PatchMapping("/{id}")
-    public ResponseEntity<TaskReponse> updateTask(
+    public ResponseEntity<TaskResponse> updateTask(
             @PathVariable UUID id,
-            @RequestBody TaskPatchRequest request,
+            @RequestBody @Valid TaskPatchRequest request,
             @AuthenticationPrincipal UserAccount user
     ) {
         return ResponseEntity.ok(taskService.updateTask(id, request, user));

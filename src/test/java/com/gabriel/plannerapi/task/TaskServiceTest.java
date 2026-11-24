@@ -53,7 +53,7 @@ public class TaskServiceTest {
         when(taskRepository.findByIdAndUser(taskId, user))
                 .thenReturn(Optional.of(task));
 
-        TaskReponse response = taskService.getTaskById(taskId, user);
+        TaskResponse response = taskService.getTaskById(taskId, user);
 
         assertThat(response.id()).isEqualTo(taskId);
         assertThat(response.title()).isEqualTo("Estudar JUNIT");
@@ -86,7 +86,7 @@ public class TaskServiceTest {
 
         when(taskRepository.save(any(Task.class))).thenReturn(taskSalva);
 
-        TaskReponse response = taskService.createTask(request, user);
+        TaskResponse response = taskService.createTask(request, user);
 
         assertThat(response.title()).isEqualTo("Nova task");
         assertThat(response.completed()).isFalse();
@@ -102,7 +102,7 @@ public class TaskServiceTest {
         when(taskRepository.findByIdAndUser(taskId, user)).thenReturn(Optional.of(task));
         when(taskRepository.save(any(Task.class))).thenReturn(task);
 
-        TaskReponse response = taskService.updateTask(taskId, request, user);
+        TaskResponse response = taskService.updateTask(taskId, request, user);
 
         assertThat(response.title()).isEqualTo("Titulo atualizado");
         verify(taskRepository).save(task);
