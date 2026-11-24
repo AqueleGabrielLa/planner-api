@@ -1,5 +1,6 @@
 package com.gabriel.plannerapi.auth;
 
+import com.gabriel.plannerapi.exception.EmailAlreadyExistsException;
 import com.gabriel.plannerapi.security.JwtService;
 import com.gabriel.plannerapi.user.UserAccount;
 import com.gabriel.plannerapi.user.UserAccountRepository;
@@ -19,6 +20,10 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public AuthResponse register(RegisterRequest request) {
+        if (userRepository.findByEmail(request.email()).isPresent()) {
+            throw new EmailAlreadyExistsException("E-mail já cadastrado: " + request.email());
+        }
+
         var user = UserAccount.builder()
                 .name(request.name())
                 .email(request.email())

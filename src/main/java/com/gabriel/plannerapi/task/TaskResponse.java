@@ -3,7 +3,7 @@ package com.gabriel.plannerapi.task;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public record TaskReponse(
+public record TaskResponse(
         UUID id,
         String title,
         String description,

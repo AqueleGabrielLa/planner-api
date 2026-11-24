@@ -1,25 +1,28 @@
 package com.gabriel.plannerapi.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "user_account")
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserAccount implements UserDetails {
+@EqualsAndHashCode(of = "id")
+@ToString(exclude = "password")
+public class UserAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -31,6 +34,7 @@ public class UserAccount implements UserDetails {
     @Column(nullable = false, length = 150, unique = true)
     private String email;
 
+    @JsonIgnore
     @Column(nullable = false)
     private String password;
 
@@ -40,15 +44,5 @@ public class UserAccount implements UserDetails {
     @PrePersist
     public void prePersist(){
         this.createdAt = LocalDateTime.now();
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
-    }
-
-    @Override
-    public String getUsername() {
-        return this.email;
     }
 }
