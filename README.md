@@ -145,11 +145,11 @@ Todas as rotas exigem o header `Authorization: Bearer <token>`, **exceto** `/aut
 |---|---|---|---|---|
 | `POST` | `/auth/register` | Cadastra usuário e devolve token | Não | `200` |
 | `POST` | `/auth/login` | Autentica e devolve token | Não | `200` |
-| `GET` | `/task/` | Lista as tarefas do usuário | Sim | `200` |
-| `GET` | `/task/{id}` | Busca uma tarefa por ID | Sim | `200` |
-| `POST` | `/task/` | Cria uma tarefa | Sim | `200` |
-| `PATCH` | `/task/{id}` | Atualiza campos enviados | Sim | `200` |
-| `DELETE` | `/task/{id}` | Remove uma tarefa | Sim | `204` |
+| `GET` | `/tasks` | Lista as tarefas do usuário | Sim | `200` |
+| `GET` | `/tasks/{id}` | Busca uma tarefa por ID | Sim | `200` |
+| `POST` | `/tasks` | Cria uma tarefa | Sim | `200` |
+| `PATCH` | `/tasks/{id}` | Atualiza campos enviados | Sim | `200` |
+| `DELETE` | `/tasks/{id}` | Remove uma tarefa | Sim | `204` |
 | `GET` | `/users/{id}` | Dados do próprio usuário autenticado | Sim | `200` |
 
 **Corpos das requisições**
@@ -173,7 +173,7 @@ Todas as rotas exigem o header `Authorization: Bearer <token>`, **exceto** `/aut
 }
 ```
 
-`POST /task/`
+`POST /tasks`
 
 ```json
 {
@@ -182,7 +182,7 @@ Todas as rotas exigem o header `Authorization: Bearer <token>`, **exceto** `/aut
 }
 ```
 
-`PATCH /task/{id}` — todos os campos são opcionais; `title` não pode ser vazio.
+`PATCH /tasks/{id}` — todos os campos são opcionais; `title` não pode ser vazio.
 
 ```json
 {
@@ -235,7 +235,7 @@ curl -X POST http://localhost:8080/auth/login \
 Criar tarefa:
 
 ```bash
-curl -X POST http://localhost:8080/task/ \
+curl -X POST http://localhost:8080/tasks \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer SEU_TOKEN" \
   -d '{"title":"Estudar matemática","description":"Revisar somatório"}'
@@ -244,14 +244,14 @@ curl -X POST http://localhost:8080/task/ \
 Listar tarefas:
 
 ```bash
-curl http://localhost:8080/task/ \
+curl http://localhost:8080/tasks \
   -H "Authorization: Bearer SEU_TOKEN"
 ```
 
 Concluir tarefa:
 
 ```bash
-curl -X PATCH http://localhost:8080/task/ID_DA_TASK \
+curl -X PATCH http://localhost:8080/tasks/ID_DA_TASK \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer SEU_TOKEN" \
   -d '{"completed":true}'
@@ -278,7 +278,7 @@ Erros são padronizados:
 | `400` | `BAD_REQUEST` | JSON malformado ou ID com formato inválido |
 | `401` | `UNAUTHORIZED` | E-mail ou senha inválidos no login |
 | `401` | — | Sem token ou token inválido/expirado |
-| `404` | `NOT_FOUND` | Tarefa inexistente/de outro usuário ou tentativa de ler outro usuário |
+| `404` | `NOT_FOUND` | Tarefa inexistente/de outro usuário, outro usuário ou rota inexistente |
 | `409` | `CONFLICT` | E-mail já cadastrado |
 | `500` | `INTERNAL_ERROR` | Erro inesperado (registrado no log do servidor) |
 

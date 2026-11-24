@@ -14,21 +14,21 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(path = "task")
+@RequestMapping(path = "/tasks")
 @RequiredArgsConstructor
 @SecurityRequirement(name = "bearerAuth")
-@Tag(name = "Tasks", description = "Gerenciamento de tasks do usuário autenticado")
+@Tag(name = "Tasks", description = "Gerenciamento de tarefas do usuário autenticado")
 public class TaskController {
 
     private final TaskService taskService;
 
-    @Operation(summary = "Lista todas as tasks do usuário")
-    @GetMapping("/")
+    @Operation(summary = "Lista todas as tarefas do usuário")
+    @GetMapping
     public ResponseEntity<List<TaskResponse>> getAllTasks(@AuthenticationPrincipal UserAccount user){
         return ResponseEntity.ok(taskService.getAllTasks(user));
     }
 
-    @Operation(summary = "Busca uma task pelo ID")
+    @Operation(summary = "Busca uma tarefa pelo ID")
     @GetMapping("/{id}")
     public ResponseEntity<TaskResponse> getTaskById(
             @PathVariable UUID id,
@@ -37,8 +37,8 @@ public class TaskController {
         return ResponseEntity.ok(taskService.getTaskById(id, user));
     }
 
-    @Operation(summary = "Cria uma nova task")
-    @PostMapping("/")
+    @Operation(summary = "Cria uma nova tarefa")
+    @PostMapping
     public ResponseEntity<TaskResponse> createTask(
             @RequestBody @Valid TaskRequest request,
             @AuthenticationPrincipal UserAccount user
@@ -46,7 +46,7 @@ public class TaskController {
         return ResponseEntity.ok(taskService.createTask(request, user));
     }
 
-    @Operation(summary = "Atualiza uma task")
+    @Operation(summary = "Atualiza uma tarefa")
     @PatchMapping("/{id}")
     public ResponseEntity<TaskResponse> updateTask(
             @PathVariable UUID id,
@@ -56,7 +56,7 @@ public class TaskController {
         return ResponseEntity.ok(taskService.updateTask(id, request, user));
     }
 
-    @Operation(summary = "Deleta uma task")
+    @Operation(summary = "Deleta uma tarefa")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTask(
             @PathVariable UUID id,

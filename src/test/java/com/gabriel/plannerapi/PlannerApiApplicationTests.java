@@ -31,6 +31,15 @@ class PlannerApiApplicationTests {
 	}
 
 	@Test
+	void rotasDeTarefasUsamTasks() throws IOException {
+		String token = tokenDe(post("/auth/register", registro("rotas-tasks@email.com")));
+
+		assertThat(get("/tasks", token).status()).isEqualTo(200);
+		assertThat(get("/task", token).status()).isEqualTo(404);
+		assertThat(get("/task/", token).status()).isEqualTo(404);
+	}
+
+	@Test
 	void loginComSenhaErradaRetorna401() throws IOException {
 		String email = "login-erro@email.com";
 
