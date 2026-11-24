@@ -274,6 +274,7 @@ Erros são padronizados:
 |---|---|---|
 | `400` | `VALIDATION_ERROR` | Campo inválido (ex.: e-mail mal formatado, título vazio) |
 | `400` | `BAD_REQUEST` | JSON malformado ou ID com formato inválido |
+| `401` | `UNAUTHORIZED` | E-mail ou senha inválidos no login |
 | `401` | — | Sem token ou token inválido/expirado |
 | `404` | `NOT_FOUND` | Tarefa inexistente ou de outro usuário |
 | `409` | `CONFLICT` | E-mail já cadastrado |
