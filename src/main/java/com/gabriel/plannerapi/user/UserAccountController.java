@@ -18,8 +18,9 @@ public class UserAccountController {
     private final UserAccountService userService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserAccount> findById(@PathVariable UUID id){
+    public ResponseEntity<UserResponse> findById(@PathVariable UUID id){
         return userService.findById(id)
+                .map(user -> new UserResponse(user.getId(), user.getName(), user.getEmail(), user.getCreatedAt()))
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
