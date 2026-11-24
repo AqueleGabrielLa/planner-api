@@ -34,10 +34,20 @@ Swagger disponível em `http://localhost:8080/swagger-ui/index.html`
 
 ## Variáveis de ambiente
 
-Copie o arquivo de exemplo e ajuste o necessário
+O compose já injeta um secret de demonstração no container. Para usar o seu próprio:
 
 ```bash
-cp application.properties.example application.properties
+JWT_SECRET="seu-secret-com-32-caracteres-ou-mais" docker compose up --build
 ```
+
+Para rodar a API fora do Docker (IDE ou `./mvnw spring-boot:run`), copie o exemplo e defina o secret:
+
+```bash
+cp src/main/resources/application.properties.example src/main/resources/application.properties
+export JWT_SECRET="seu-secret-com-32-caracteres-ou-mais"
+./mvnw spring-boot:run
+```
+
+O `application.properties` local não é versionado e guarda apenas placeholders — o secret nunca entra no jar.
 
 

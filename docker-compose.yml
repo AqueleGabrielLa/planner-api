@@ -23,6 +23,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/plannerdb
       SPRING_DATASOURCE_USERNAME: planner
       SPRING_DATASOURCE_PASSWORD: planner123
+      JWT_SECRET: ${JWT_SECRET:-planner-api-demo-secret-change-me-please-32chars}
     depends_on:
       postgres:
         condition: service_healthy
